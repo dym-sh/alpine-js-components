@@ -93,20 +93,107 @@
 
 
 <!-- tabs -->
-<div
-  x-data="{tabs: ['Home','Users','Settings']}"
+<!-- <div
+  x-data="
+    { tabs: ['Home','Users','Settings','Orders']
+    , activeTab: 'Home'
+  }"
 >
-  <div>
+  <div class="flex">
     <template x-for="tab in tabs">
-      <div></div>
+      <div
+        @click="activeTab = tab"
+        x-text="tab"
+        class="py-1 px-3 cursor-pointer bg-white border"
+        :class="
+          { 'border-purple-500' : activeTab === tab
+          , 'text-blue-500' : activeTab === tab
+          }"
+        ></div>
+    </template>
+  </div>
+  <div class="py-2 px-3 bg-white border">
+    <div x-show="activeTab==='Home' " x-transition>Home</div>
+    <div x-show="activeTab==='Users' " x-transition>Users</div>
+    <div x-show="activeTab==='Settings' " x-transition>Settings</div>
+    <div x-show="activeTab==='Orders' " x-transition>Orders</div>
+  </div>
+</div> -->
+
+
+<!-- carousel -->
+<div x-data="
+{
+  images:[
+    '../img/1.jpg',
+    '../img/2.jpg',
+    '../img/3.jpg',
+    '../img/4.jpg',
+  ]
+, activeImage: null
+, prev() {
+    const index = this.images.indexOf(this.activeImage)
+    if(0 == index) {
+      this.activeImage = this.images[this.images.length-1]
+    } else {
+      this.activeImage = this.images[index-1]
+    }
+  }
+, next() {
+    const index = this.images.indexOf(this.activeImage)
+    if(this.images.length-1 == index) {
+      this.activeImage = this.images[0]
+    } else {
+      this.activeImage = this.images[index+1]
+    }
+  }
+, init()
+  {
+    this.activeImage = this.images.length > 0 ? this.images[0] : null
+  }
+}">
+
+  <div class="flex">
+    <template x-for="img in images">
+      <a @click="activeImage = img"
+      class="cursor-pointer w-[100px] border-2 border-gray-300 hover:border-purple-500"
+      :class="{'border-green-600':activeImage===img}"
+      >
+        <img
+        :src="img"
+        class="object-cover w-[100px]"
+        >
+      </a>
     </template>
   </div>
 
-  <div>Home</div>
-  <div>Users</div>
-  <div>Settings</div>
+  <div class="relative">
+    <template x-for="img in images">
+      <div class="w-full aspect-video aspect-h-2"
+        x-show="activeImage === img"
+        x-transition.duration
+        >
+          <img
+            :src="img"
+            class="object-cover"
+          >
+      </div>
+    </template>
+
+    <a href="#" @click.prevent="prev" class="absolute left-0 top-1/2 -translate-y-1/2 text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+      </svg>
+    </a>
+
+    <a href="#" @click.prevent="next" class="absolute right-0 top-1/2 -translate-y-1/2 text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+      </svg>
+    </a>
+
+  </div>
+
 </div>
-
-
 
 </body>
